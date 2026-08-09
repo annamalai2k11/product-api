@@ -1,22 +1,33 @@
-import os
-from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-load_dotenv()
+from app.config import get_database_url
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = get_database_url()
 
-engine = create_engine(DATABASE_URL, echo=False)
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={"check_same_thread": False},
+        echo=False,
+    )
+else:
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,
+        echo=False,
+    )
 
 SessionLocal = sessionmaker(
-    bind = engine,
+    bind=engine,
     autoflush=False,
-    autocommit=False
+    autocommit=False,
 )
+
 
 class Base(DeclarativeBase):
     pass
+
 
 def get_db():
     db = SessionLocal()
@@ -24,3 +35,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+# Create tables automatically
+Base.metadata.create_all(bind=engine)

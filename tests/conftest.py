@@ -1,7 +1,7 @@
 import os
-from dotenv import load_dotenv
-load_dotenv()
+
 import pytest
+from dotenv import load_dotenv
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -9,25 +9,31 @@ from sqlalchemy.orm import sessionmaker
 from app.database import Base, get_db
 from app.main import app
 
+load_dotenv()
 
+TEST_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
-TEST_DATABASE_URL = os.getenv("DATABASE_URL")
-
-engine = create_engine(
-    TEST_DATABASE_URL,
-    echo=False
-)
+if TEST_DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        TEST_DATABASE_URL,
+        connect_args={"check_same_thread": False},
+        echo=False,
+    )
+else:
+    engine = create_engine(
+        TEST_DATABASE_URL,
+        echo=False,
+    )
 
 TestingSessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
-    bind=engine
+    bind=engine,
 )
 
 
 @pytest.fixture(scope="function")
 def db():
-
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
@@ -41,7 +47,6 @@ def db():
 
 @pytest.fixture(scope="function")
 def client(db):
-
     def override_get_db():
         try:
             yield db
