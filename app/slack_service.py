@@ -109,17 +109,24 @@ def update_approval_message(
         else f"❌ Rejected by {approver}"
     )
 
-    client.chat_update(
-        channel=channel,
-        ts=ts,
-        text=text,
-        blocks=[
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": text
+    try:
+        response = client.chat_update(
+            channel=channel,
+            ts=ts,
+            text=text,
+            blocks=[
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": text,
+                    },
                 }
-            }
-        ]
-    )
+            ],
+        )
+
+        return response
+
+    except SlackApiError as ex:
+        print(ex.response.data)
+        raise Exception(ex.response["error"])
