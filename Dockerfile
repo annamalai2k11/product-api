@@ -1,12 +1,16 @@
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY pyproject.toml uv.lock ./
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install uv
+
+RUN uv sync --frozen
 
 COPY . .
+
+ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 8000
 
