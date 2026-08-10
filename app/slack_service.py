@@ -138,14 +138,13 @@ def update_approval_message_user(
         approver: str
 ):
     text = (
-        f"Approval ID: {approval_id} is {status} by {approver}"
+        f"Approval ID: {approval_id} is {status.value} by {approver}"
     )
 
     try:
-        response = client.chat_update(
+        response = client.chat_postMessage(
                     channel=channel,
-                    ts=ts,
-                    text=text,
+                    text="Product Approval Status",
                     blocks=[
                         {
                             "type": "section",
