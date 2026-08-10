@@ -4,9 +4,11 @@ from fastapi import APIRouter
 from fastapi import Form
 from sqlalchemy.orm import Session
 
-from app.approval_constants import ApprovalStatus
+from app.approval_constants import ApprovalStatus, RequestType
 from app.approval_service import get
+from app.crud import create_product as create_product_db
 from app.database import SessionLocal
+from app.schemas import ProductCreate
 from app.slack_service import update_approval_message, update_approval_message_user
 from app.config import get_slack_user_channel_id
 
@@ -43,6 +45,11 @@ async def slack_actions(
             else ApprovalStatus.REJECTED
         )
 
+        if approve:
+            if approval.request_type == RequestType.CREATE_PRODUCT:
+                product_payload = ProductCreate.model_validate(approval.payload)
+                create_product_db(product_payload, db)
+
         db.commit()
         db.refresh(approval)
 
@@ -55,11 +62,10 @@ async def slack_actions(
 
         update_approval_message_user(
             get_slack_user_channel_id(),
-            approval.slack_ts,
             approval.status,
             approval_id,
             approver
-        )        
+        )
 
         return ""
 

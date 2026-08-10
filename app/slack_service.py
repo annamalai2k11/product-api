@@ -133,7 +133,6 @@ def update_approval_message(
 
 def update_approval_message_user(
         channel: str,
-        ts: str,
         status: str,
         approval_id: str,
         approver: str
