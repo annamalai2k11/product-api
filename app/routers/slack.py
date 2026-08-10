@@ -7,7 +7,8 @@ from sqlalchemy.orm import Session
 from app.approval_constants import ApprovalStatus
 from app.approval_service import get
 from app.database import SessionLocal
-from app.slack_service import update_approval_message
+from app.slack_service import update_approval_message, update_approval_message_user
+from app.config import get_slack_user_channel_id
 
 router = APIRouter(
     prefix="/slack",
@@ -51,6 +52,14 @@ async def slack_actions(
             approve,
             approver,
         )
+
+        update_approval_message_user(
+            get_slack_user_channel_id(),
+            approval.slack_ts,
+            approval.status,
+            approval_id,
+            approver
+        )        
 
         return ""
 

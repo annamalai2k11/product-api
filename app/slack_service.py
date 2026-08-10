@@ -130,3 +130,35 @@ def update_approval_message(
     except SlackApiError as ex:
         print(ex.response.data)
         raise Exception(ex.response["error"])
+
+def update_approval_message_user(
+        channel: str,
+        ts: str,
+        status: str,
+        approval_id: str,
+        approver: str
+):
+    text = (
+        f"Approval ID: {approval_id} is {status} by {approver}"
+    )
+
+    try:
+        response = client.chat_update(
+                    channel=channel,
+                    ts=ts,
+                    text=text,
+                    blocks=[
+                        {
+                            "type": "section",
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": text,
+                            },
+                        }
+                    ],
+                )
+        
+        return response
+    except SlackApiError as ex:
+            print(ex.response.data)
+            raise Exception(ex.response["error"])
