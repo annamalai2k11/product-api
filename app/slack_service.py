@@ -97,29 +97,29 @@ def send_approval_request(
     except SlackApiError as ex:
         raise Exception(ex.response["error"])
 
-    def update_approval_message(
-        channel: str,
-        ts: str,
-        approved: bool,
-        approver: str,
-    ):
-        text = (
-            f"✅ Approved by {approver}"
-            if approved
-            else f"❌ Rejected by {approver}"
-        )
+def update_approval_message(
+    channel: str,
+    ts: str,
+    approved: bool,
+    approver: str,
+):
+    text = (
+        f"✅ Approved by {approver}"
+        if approved
+        else f"❌ Rejected by {approver}"
+    )
 
-        client.chat_update(
-            channel=channel,
-            ts=ts,
-            text=text,
-            blocks=[
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": text
-                    }
+    client.chat_update(
+        channel=channel,
+        ts=ts,
+        text=text,
+        blocks=[
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": text
                 }
-            ]
-        )
+            }
+        ]
+    )

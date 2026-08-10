@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
 from app.approval_models import Approval, ApprovalStatus
-from app.services.slack_service import update_approval_message
+from app.slack_service import update_approval_message
 
 router = APIRouter(
     prefix="/slack",

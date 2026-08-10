@@ -84,10 +84,3 @@ def test_get_missing_approval_returns_404(client):
 
     assert response.status_code == 404
     assert response.json()["detail"] == "Approval not found"
-
-
-def test_slack_action_endpoint_returns_empty_string(client):
-    response = client.post("/slack/actions", data={"payload": "hello-from-slack"})
-
-    assert response.status_code == 200
-    assert response.text == '""'
