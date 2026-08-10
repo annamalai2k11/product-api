@@ -35,3 +35,18 @@ def get_database_url() -> str:
 
 def get_api_key() -> str:
     return os.getenv("API_KEY", "my-secret-api-key")
+
+def get_slack_bot_token() -> str:
+    return os.getenv("SLACK_BOT_TOKEN", "")
+
+
+def get_slack_signing_secret() -> str:
+    return os.getenv("SLACK_SIGNING_SECRET", "")
+
+
+def get_slack_manager_channel_id() -> str:
+    return os.getenv("SLACK_MANAGER_CHANNEL_ID", "")
+
+
+def get_slack_user_channel_id() -> str:
+    return os.getenv("SLACK_USER_CHANNEL_ID", "")

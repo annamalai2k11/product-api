@@ -101,3 +101,6 @@ App Registration / Service Principal
    }
    AZURE_CONTAINER_APP_NAME: Azure Portal → Container Apps → your Product API app → Overview
    AZURE_RESOURCE_GROUP : RG NAme
+
+6. Note Environment Variables for containers is available in
+   Container App -> Application -> Containers -> Environment Variables

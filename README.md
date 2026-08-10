@@ -478,6 +478,71 @@ curl -X DELETE http://localhost:8000/products/1 \
 
 ---
 
+## Approval and Slack curl reference
+
+### Create approval
+
+```bash
+curl --location 'http://127.0.0.1:8000/approvals' \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: my-secret-api-key' \
+  --data '{
+    "request_type": "CREATE_PRODUCT",
+    "requested_by": "alice",
+    "payload": {
+      "name": "MacBook Pro",
+      "description": "Apple laptop",
+      "price": 2499.99,
+      "quantity": 3
+    }
+  }'
+```
+
+### Get all pending approvals
+
+```bash
+curl --location 'http://127.0.0.1:8000/approvals' \
+  --header 'x-api-key: my-secret-api-key'
+```
+
+### Get a single approval by ID
+
+```bash
+curl --location 'http://127.0.0.1:8000/approvals/APPROVAL_ID' \
+  --header 'x-api-key: my-secret-api-key'
+```
+
+### Approve an approval request
+
+```bash
+curl --location 'http://127.0.0.1:8000/approvals/APPROVAL_ID/approve' \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: my-secret-api-key' \
+  --data '{
+    "comments": "Approved by reviewer"
+  }'
+```
+
+### Reject an approval request
+
+```bash
+curl --location 'http://127.0.0.1:8000/approvals/APPROVAL_ID/reject' \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: my-secret-api-key' \
+  --data '{
+    "comments": "Rejected by reviewer"
+  }'
+```
+
+### Slack actions webhook
+
+```bash
+curl --location 'http://127.0.0.1:8000/slack/actions' \
+  --form 'payload=hello-from-slack'
+```
+
+---
+
 ## Quick command summary
 
 ### Local development

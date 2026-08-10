@@ -12,6 +12,8 @@ dependencies = [
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
     "python-dotenv>=1.2.2",
+    "python-multipart>=0.0.9",
+    "slack-sdk>=3.43.0",
     "sqlalchemy>=2.0.51",
     "uvicorn>=0.52.1",
 ]

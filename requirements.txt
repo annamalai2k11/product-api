@@ -3,6 +3,7 @@ uvicorn
 sqlalchemy
 psycopg[binary]
 python-dotenv
+python-multipart
 pydantic
 pytest
 pytest-cov
